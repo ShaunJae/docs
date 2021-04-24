@@ -74,9 +74,22 @@ To let the game know what code it should run from our script mod, we need to [in
     }
 ```
 
+### Access Notification Class
+
+When referencing to a notification we have to access the `Notification` class from the VocelTycoon namespace.
+
+To do this, we can include this line at the top of our file which will import the members of the `Notification` class into our class.
+
+```csharp
+using VoxelTycoon.Notifications;
+```
+
+!!! tip 
+    Alternatively, you can type out `Notification.<Member>` e.g.: `Notification.NotificationPriority.Critical` to access the `Notification` class, but it's often easier to include the class at the beginning of the file.
+
 ### Access Notification Manager API
 
-To show our notification in-game, we need to access **Notification Manager**. Besides other methods it exposes, the most we interested in currently is this one:
+To show our notification in-game, we need to access **Notification Manager** from the `Notification` class. Besides other methods it exposes, the most we interested in currently is this one:
 
 ```csharp
 public Notification Push(NotificationPriority priority,
@@ -85,6 +98,12 @@ public Notification Push(NotificationPriority priority,
     string message,
     INotificationAction action,
     FontIcon icon)
+```
+
+For the icon, we're going to call for a function from VoxelTycoon's `UI` class which will let us import an icon from Font Awesome. We can access the `UI` class similarly to how we accessed `Notification` class.
+
+```csharp
+using VoxelTycoon.UI;
 ```
 
 Let's call it from our mod's code:
@@ -109,7 +128,9 @@ protected override void OnGameStarted()
     // which effectively means no action will be executed on click.
     var action = default(INotificationAction);
 
-    // Use custom FontAwesome (https://fontawesome.com/icons) icon
+    // Use custom FontAwesome (https://fontawesome.com/icons) icon.
+    // FontIcon is a member of VoxelTycoon.UI which we can use because
+    // we called reference to the UI class in the previous step.
     var icon = FontIcon.FaSolid("\uf7e4");
 
     // And finally, call the API
